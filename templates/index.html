@@ -1,60 +1,139 @@
-{% extends 'layout.html' %}
+{% extends "layout.html" %}
+{% import "_macros.html" as macros %}
 
-{% block content %}
+{% block container %}
+<div class="max-w-3xl mx-auto mt-10 p-10 bg-gray-900 text-white rounded-xl shadow-2xl">
+    <h2 class="text-3xl font-bold mb-6 text-center"> Realiza tu Pedido</h2>
+    <form action="/pedido" method="POST" class="space-y-6">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+                <label class="block text-sm font-semibold">Nombre</label>
+                <input type="text" name="nombre" class="w-full mt-2 p-3 bg-gray-800 rounded-lg border border-gray-700 focus:ring-2 focus:ring-teal-400" required>
+            </div>
+            <div>
+                <label class="block text-sm font-semibold">Dirección</label>
+                <input type="text" name="direccion" class="w-full mt-2 p-3 bg-gray-800 rounded-lg border border-gray-700 focus:ring-2 focus:ring-teal-400" required>
+            </div>
+            <div>
+                <label class="block text-sm font-semibold">Teléfono</label>
+                <input type="text" name="telefono" class="w-full mt-2 p-3 bg-gray-800 rounded-lg border border-gray-700 focus:ring-2 focus:ring-teal-400" required>
+            </div>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <fieldset class="p-4 border border-gray-700 rounded-lg bg-gray-800">
+                <legend class="text-lg font-semibold mb-2">Tamaño de la Pizza</legend>
+                <div class="space-y-2">
+                    <label class="flex items-center space-x-2 cursor-pointer">
+                        <input type="radio" name="size" value="chica" class="accent-teal-500" required>
+                        <span>Chica $40</span>
+                    </label>
+                    <label class="flex items-center space-x-2 cursor-pointer">
+                        <input type="radio" name="size" value="mediana" class="accent-teal-500">
+                        <span>Mediana $80</span>
+                    </label>
+                    <label class="flex items-center space-x-2 cursor-pointer">
+                        <input type="radio" name="size" value="grande" class="accent-teal-500">
+                        <span>Grande $120</span>
+                    </label>
+                </div>
+            </fieldset>
 
-<div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-    <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-            <tr>
-                <th scope="col" class="px-6 py-3">Nombre</th>
-                <th scope="col" class="px-6 py-3">Apaterno</th>
-                <th scope="col" class="px-6 py-3">Correo</th>
-                <th scope="col" class="px-6 py-3">Editar</th>
-                <th scope="col" class="px-6 py-3">Eliminar</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for alum in alumnos %}
-            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600">
-                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ alum.nombre }}</th>
-                <td class="px-6 py-4">{{ alum.apaterno }}</td>
-                <td class="px-6 py-4">{{ alum.email }}</td>
-                <td class="px-6 py-4">
-                    <a href="modificar?{{ alum.id }}">
-                        <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m11.5 11.5 2.071 1.994M4 10h5m11 0h-1.5M12 7V4M7 7V4m10 3V4m-7 13H8v-2l5.227-5.292a1.46 1.46 0 0 1 2.065 2.065L10 17Zm-5 3h14a1 1 0 0 0 1-1V7a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1Z"/>
-                        </svg>
-                        Editar
-                    </a>
-                </td>
-                <td class="px-6 py-4">
-                    <a href="eliminar?{{ alum.id }}">
-                        <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 7h12M6 7l1 12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1l1-12M9 7V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v3"/>
-                        </svg>
-                        Eliminar
-                    </a>
-                </td>
-                <td class="px-6 py-4">
-                    <a href="detalles?id={{ alum.id }}">
-                        <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 20.5c4.142 0 7.5-3.358 7.5-7.5s-3.358-7.5-7.5-7.5-7.5 3.358-7.5 7.5 3.358 7.5 7.5 7.5Z"/>
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15.5a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z"/>
-                        </svg>
-                        Detalles
-                    </a>
-                </td>
-            </svg>
-        </a>
-    </td>
-</a>
-                <td class="px-6 py-4 text-right">
-                    <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Eliminar</a>
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+            <fieldset class="p-4 border border-gray-700 rounded-lg bg-gray-800">
+                <legend class="text-lg font-semibold mb-2">Ingredientes Extras (+$10 c/u)</legend>
+                <div class="space-y-2">
+                    <label class="flex items-center space-x-2 cursor-pointer">
+                        <input type="checkbox" name="ingredientes" value="jamon" class="accent-purple-500">
+                        <span>Jamón</span>
+                    </label>
+                    <label class="flex items-center space-x-2 cursor-pointer">
+                        <input type="checkbox" name="ingredientes" value="piña" class="accent-purple-500">
+                        <span>Piña</span>
+                    </label>
+                    <label class="flex items-center space-x-2 cursor-pointer">
+                        <input type="checkbox" name="ingredientes" value="champiñones" class="accent-purple-500">
+                        <span>Champiñones</span>
+                    </label>
+                </div>
+            </fieldset>
+        </div>
+        
+        <div class="flex items-center space-x-4">
+            <label class="text-sm font-semibold">Cantidad</label>
+            <input type="number" name="num_pizzas" min="1" class="p-3 w-20 bg-gray-800 rounded-lg border border-gray-700 focus:ring-2 focus:ring-teal-400" required>
+            <button type="submit" class="bg-teal-500 text-white px-6 py-2 rounded-lg font-semibold hover:bg-teal-600 transition">Agregar Pedido</button>
+        </div>
+    </form>
+
+    <div class="mt-8">
+        <h2 class="text-2xl font-semibold mb-4"> Pedidos Actuales</h2>
+        <div class="overflow-x-auto rounded-lg shadow-md">
+            <table class="w-full text-sm text-left text-gray-300 bg-gray-800">
+                <thead class="text-xs uppercase bg-gray-700 text-gray-400">
+                    <tr>
+                        <th class="px-6 py-3">Nombre</th>
+                        <th class="px-6 py-3">Teléfono</th>
+                        <th class="px-6 py-3">Tamaño</th>
+                        <th class="px-6 py-3">Ingredientes</th>
+                        <th class="px-6 py-3">Cantidad</th>
+                        <th class="px-6 py-3">Total</th>
+                        <th class="px-6 py-3 text-center" style="min-width: 100px;">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for pedido in pedidos %}
+                    <tr class="bg-gray-900 border-b border-gray-700">
+                        <td class="px-6 py-4">{{ pedido.nombre }}</td>
+                        <td class="px-6 py-4">{{ pedido.telefono }}</td>
+                        <td class="px-6 py-4">{{ pedido.size }}</td>
+                        <td class="px-6 py-4">{{ ", ".join(pedido.ingredientes) }}</td>
+                        <td class="px-6 py-4">{{ pedido.num_pizzas }}</td>
+                        <td class="px-6 py-4 text-green-400">${{ pedido.subtotal }}</td>
+                        <td class="px-6 py-4 text-center">
+                            <form action="{{ url_for('quitar_pedido', index=loop.index0) }}" method="POST">
+                                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                <button type="submit" class="bg-red-500 w-20 py-2 rounded-lg text-white hover:bg-red-600">Quitar</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <form action="{{ url_for('terminar_pedidos') }}" method="POST" class="mt-4">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <button type="submit" class="bg-blue-500 px-6 py-2 rounded-lg text-white hover:bg-blue-600 transition">Finalizar Pedidos</button>
+        </form>
+    </div>
+
+    <div class="mt-8">
+        <h2 class="text-2xl font-semibold mb-4"> Ventas del Día</h2>
+        <div class="overflow-hidden rounded-lg shadow-md">
+            <table class="w-full text-sm text-left text-gray-300 bg-gray-800">
+                <thead class="text-xs uppercase bg-gray-700 text-gray-400">
+                    <tr>
+                        <th class="px-6 py-3">Cliente</th>
+                        <th class="px-6 py-3">Monto Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for venta in ventas %}
+                        <tr class="bg-gray-900 border-b border-gray-700">
+                            <td class="px-6 py-4">{{ venta.cliente.nombre }}</td>
+                            <td class="px-6 py-4 text-green-400">${{ "%.2f"|format(venta.montoTotal) }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+                <tfoot>
+                    <tr class="bg-gray-700">
+                        <td class="px-6 py-4 font-semibold">Total de Ventas</td>
+                        <td class="px-6 py-4 text-green-400 font-semibold">${{ "%.2f"|format(total_ventas) }}</td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
 </div>
-
 {% endblock %}

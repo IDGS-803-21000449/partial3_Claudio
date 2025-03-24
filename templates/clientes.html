@@ -1,0 +1,85 @@
+{% extends "layout.html" %}
+{% import "_macros.html" as macros %}
+
+{% block container %}
+<div class="max-w-3xl mx-auto mt-10 p-10 bg-gray-900 text-white rounded-xl shadow-2xl">
+    <h2 class="text-3xl font-bold mb-6 text-center">Reporte de Ventas y Clientes</h2>
+    
+    <!-- Resumen -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <div class="p-4 bg-gray-800 rounded-lg border border-gray-700">
+            <h4 class="text-lg font-semibold mb-2">Total Ventas</h4>
+            <p class="text-3xl font-bold text-green-400">${{ "%.2f"|format(total_ventas) }}</p>
+        </div>
+    </div>
+
+    <!-- Tabla de Ventas -->
+    <div class="mb-8">
+        <h3 class="text-2xl font-semibold mb-4">Ventas</h3>
+        <div class="overflow-x-auto rounded-lg shadow-md">
+            <table class="w-full text-sm text-left text-gray-300 bg-gray-800">
+                <thead class="text-xs uppercase bg-gray-700 text-gray-400">
+                    <tr>
+                        <th class="px-6 py-3">ID venta</th>
+                        <th class="px-6 py-3">ID Cliente</th>
+                        <th class="px-6 py-3">Cliente</th>
+                        <th class="px-6 py-3">Fecha</th>
+                        <th class="px-6 py-3">Tamaño</th>
+                        <th class="px-6 py-3">Ingredientes</th>
+                        <th class="px-6 py-3">Cantidad</th>
+                        <th class="px-6 py-3">Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for venta in ventas %}
+                    <tr class="bg-gray-900 border-b border-gray-700">
+                        <td class="px-6 py-4">{{ venta.idVenta }}</td>
+                        <td class="px-6 py-4">{{ venta.idCliente }}</td>
+                        <td class="px-6 py-4">{{ venta.cliente.nombre }}</td>
+                        <td class="px-6 py-4">{{ venta.fechaVenta.strftime('%d/%m/%Y %H:%M') }}</td>
+                        <td class="px-6 py-4">{{ venta.size }}</td>
+                        <td class="px-6 py-4">{{ venta.ingredientes }}</td>
+                        <td class="px-6 py-4">{{ venta.num_pizzas }}</td>
+                        <td class="px-6 py-4 text-green-400">${{ "%.2f"|format(venta.subtotal) }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Tabla de Clientes -->
+    <div>
+        <h3 class="text-2xl font-semibold mb-4">Clientes</h3>
+        <div class="overflow-x-auto rounded-lg shadow-md">
+            <table class="w-full text-sm text-left text-gray-300 bg-gray-800">
+                <thead class="text-xs uppercase bg-gray-700 text-gray-400">
+                    <tr>
+                        <th class="px-6 py-3">ID</th>
+                        <th class="px-6 py-3">Nombre</th>
+                        <th class="px-6 py-3">Dirección</th>
+                        <th class="px-6 py-3">Teléfono</th>
+                        <th class="px-6 py-3">Fecha Registro</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for cliente in clientes %}
+                    <tr class="bg-gray-900 border-b border-gray-700">
+                        <td class="px-6 py-4">{{ cliente.id }}</td>
+                        <td class="px-6 py-4">{{ cliente.nombre }}</td>
+                        <td class="px-6 py-4">{{ cliente.direccion }}</td>
+                        <td class="px-6 py-4">{{ cliente.telefono }}</td>
+                        <td class="px-6 py-4">{{ cliente.created_date.strftime('%d/%m/%Y') }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+    <!-- Botón para volver -->
+    <div class="mt-8 flex justify-end">
+        <a href="{{ url_for('index') }}" class="bg-gray-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-gray-700 transition">Volver</a>
+    </div>
+</div>
+{% endblock %}

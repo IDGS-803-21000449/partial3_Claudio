@@ -1,35 +1,22 @@
-from wtforms import Form
+from flask_sqlalchemy import SQLAlchemy
 from flask_wtf import FlaskForm
+from wtforms import StringField, IntegerField, SelectField, SubmitField, SelectMultipleField, DateField
+from wtforms.validators import DataRequired
+import datetime
  
-from wtforms import StringField,IntegerField
-from wtforms import EmailField
-from wtforms import validators
+
+db = SQLAlchemy()
  
- 
-class UserForm(Form):
-    nombre=StringField('nombre',[
-        validators.DataRequired(message='El campo es requerido'),
-        validators.length(min=4,max=10, message='ingresa nombre valido')
-    ])
-    apaterno=StringField('apaterno')
-    amaterno=StringField('amaterno')
-    email=EmailField('email',[ validators.Email(message='Ingrese un correo valido')])
-    edad=IntegerField('edad')
- 
- 
-class UserForm2(Form):
-    id=IntegerField('id',
-    [validators.number_range(min=1, max=20,message='valor no valido')])
-    nombre=StringField('nombre',[
-        validators.DataRequired(message='El nombre es requerido'),
-        validators.length(min=4,max=20, message='requiere min=4 max=20')
-    ])
-   
-    apaterno=StringField('apaterno',[
-        validators.DataRequired(message='El apellido es requerido')
-    ])
-   
-    email=EmailField('correo',[
-        validators.DataRequired(message='El apellido es requerido'),
-        validators.Email(message='Ingrese un correo valido')
-    ])
+class ClientesForm(FlaskForm):
+    nombre = StringField('Nombre', validators=[DataRequired()])
+    apaterno = StringField('Apellido Paterno', validators=[DataRequired()])
+    amaterno = StringField('Apellido Materno', validators=[DataRequired()])
+    direccion = StringField('Dirección', validators=[DataRequired()])
+    telefono = StringField('Teléfono', validators=[DataRequired()])
+    fecha = DateField('Fecha de Pedido', format='%Y-%m-%d', default=datetime.date.today, validators=[DataRequired()])
+
+class PizzasForm(FlaskForm):
+    tamanio = SelectField('Tamaño', choices=[('chica', 'Chica $40'), ('mediana', 'Mediana $80'), ('grande', 'Grande $120')], validators=[DataRequired()])
+    ingredientes = SelectMultipleField('Ingredientes', choices=[('jamon', 'Jamón $10'), ('pina', 'Piña $10'), ('champinones', 'Champiñones $10')], validators=[DataRequired()])
+    cantidad = IntegerField('Número de Pizzas', validators=[DataRequired()])
+    submit = SubmitField('Agregar pedido')

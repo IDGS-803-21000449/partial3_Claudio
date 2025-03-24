@@ -1,0 +1,33 @@
+{% extends "layout.html" %}
+{% import "_macros.html" as macros %}
+
+{% block container %}
+
+<div class="max-w-3xl mx-auto mt-10 p-10 bg-gray-900 text-white rounded-xl shadow-2xl">
+    <h2 class="text-3xl font-bold mb-6 text-center">Iniciar Sesión</h2>
+    <form action="{{ url_for('login') }}" method="POST" class="space-y-6">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        
+        <div class="grid grid-cols-1 gap-6">
+            <!-- Campo de Teléfono -->
+            <div>
+                <label class="block text-sm font-semibold">Usuario</label>
+                <input type="text" name="nombre" class="w-full mt-2 p-3 bg-gray-800 rounded-lg border border-gray-700 focus:ring-2 focus:ring-teal-400" required>
+            </div>
+
+            <!-- Campo de Contraseña -->
+            <div>
+                <label class="block text-sm font-semibold">Contraseña</label>
+                <input type="password" name="contrasenia" class="w-full mt-2 p-3 bg-gray-800 rounded-lg border border-gray-700 focus:ring-2 focus:ring-teal-400" required>
+            </div>
+        </div>
+
+        <!-- Botón de Iniciar Sesión -->
+        <div class="flex justify-center">
+            <button type="submit" class="bg-teal-500 text-white px-6 py-2 rounded-lg font-semibold hover:bg-teal-600 transition">
+                Iniciar Sesión
+            </button>
+        </div>
+
+
+{% endblock %}
